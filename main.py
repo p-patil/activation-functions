@@ -22,7 +22,7 @@ def main():
     activations = {
         "relu": F.relu,
         "leaky_relu": F.leaky_relu,
-        "log_sigmoid": F.logsigmoid
+        "log_sigmoid": F.logsigmoid,
         "softsign": F.softsign,
         "tanh": F.tanh,
         "sigmoid": F.sigmoid
@@ -30,7 +30,7 @@ def main():
 
     loss_histories = {}
     for activation_name, activation in activations.items():
-        print("Testing activation function {}".format(activation_name))
+        print("Activation function {}".format(activation_name))
 
         net = SimpleConvNet(activation=activation)
         data = Cifar10()
@@ -40,6 +40,7 @@ def main():
         net.to(device)
 
         # Train
+        print("Training for activation function {}".format(activation_name))
         loss_history = net.train(data.trainloader, device=device)
         loss_histories[activation_name] = loss_history
 
@@ -48,6 +49,7 @@ def main():
         print("Test accuracy: {}%".format(100 * correct / total))
 
     # TODO(piyush) Plot directly
+    print("Done. Dumping loss_histories.pkl")
     import pickle
     with open("loss_histories.pkl", "wb") as f:
         pickle.dump(loss_histories, f)
